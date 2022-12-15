@@ -71,10 +71,6 @@ def main():
         for datapiece in json_response["data"]:
             f.write(datapiece["text"] + "\n")
 
-    
-    
-    
-
 
 if __name__ == "__main__":
     main()
