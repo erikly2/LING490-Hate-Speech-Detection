@@ -45,8 +45,9 @@ def train_eval(classifier):
         Y_train, Y_test = Y[train_index], Y[test_index]
         #proc_classifier = preprocessing.LabelEncoder()
         train_x = pd.get_dummies(X_train)
+        test_x = pd.get_dummies(X_test)
         classifier.fit(train_x, Y_train)
-        Y_pred = classifier.predict(train_x)
+        Y_pred = classifier.predict(test_x)
 
         f1 = f1_score(Y_test, Y_pred, average="micro")
         precision = precision_score(Y_test, Y_pred, average="micro")
@@ -58,7 +59,7 @@ def train_eval(classifier):
     F1 = np.mean(aList)
     Precision = np.mean(bList)
     Recall = np.mean(cList)
-    return F1, Precision, Recall
+    return Precision, Recall
 
 classifier = DecisionTreeClassifier()
 print(train_eval(classifier))
