@@ -6,7 +6,7 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 X = []
-y = []
+y = [1,1,1,1,1]
 i = 0
 file1 = open("src/Data/hatespeech.txt", 'r')
 lines = file1.readlines()
