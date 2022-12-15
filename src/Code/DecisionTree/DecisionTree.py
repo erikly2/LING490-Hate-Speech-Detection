@@ -8,6 +8,8 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import precision_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import recall_score
+from sklearn.preprocessing import OneHotEncoder
+
 
 from sklearn.model_selection import KFold
 from sklearn import preprocessing
@@ -36,7 +38,7 @@ for i, h_line in enumerate(hatespeech_lines):
 X = np.array(X)
 Y = np.array(Y)
 
-
+features = ["racism", "sexism", "none"]
 #train and evaluate based on the data to get the F1 Measure, precision, and recall assements of the model prediction
 def train_eval(classifier):
     kf = KFold(n_splits = 5)
@@ -47,6 +49,9 @@ def train_eval(classifier):
         Y_train, Y_test = Y[train_index], Y[test_index]
         train_x = pd.get_dummies(X_train).values
         test_x = pd.get_dummies(X_test).values
+        oneh = OneHotEncoder(handle_unknown="ignore")
+        oneh.fit(train_x)
+        X_test = oneh.transform(test_x)
         classifier.fit(train_x, Y_train)
         Y_pred = classifier.predict(test_x)
 
