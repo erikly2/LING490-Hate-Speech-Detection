@@ -27,9 +27,28 @@ for i, h_line in enumerate(hatespeech_lines):
     else:
         Y.append("none")
 
-#train and evaluate based on the data to get the F1 Measure assements of the model prediction
 
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 0)
+X = np.array(X)[indices.astype(int)]
+Y = np.array(Y)[indices.astype(int)]
+
+#train and evaluate based on the data to get the F1 Measure assements of the model prediction
+def train_eval(classifier):
+    kf = KFold(n_splits = 5)        # fold the data
+    foldCounter = 0
+    aList, bList, cList = list(), list(), list()
+    for train_index, test_index in kf.split(X):
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = Y[train_index], Y[test_index]
+        classifier.fit(X_train, y_train)
+        y_pred = classifier.predict(X_test)
+        f1 = f1_score(y_test, y_pred, average="micro")
+        aList.append(f1)
+        foldCounter += 1
+    F1 = np.mean(aList)
+    Precision = np.mean(bList)
+    Recall = np.mean(cList)
+    return F1, Precision, Recall
 
 classifier = DecisionTreeClassifier()
-print(classifier.fit(X_train, Y_train))
+print(train_eval(classifier))
+
