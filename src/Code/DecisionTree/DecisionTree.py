@@ -60,7 +60,7 @@ def train_eval(classifier):
     F1 = np.mean(aList)
     Precision = np.mean(bList)
     Recall = np.mean(cList)
-    return Precision, Recall
+    return F1, Precision, Recall
 
 classifier = DecisionTreeClassifier()
 print(train_eval(classifier))
