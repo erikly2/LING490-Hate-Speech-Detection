@@ -94,7 +94,7 @@ def main():
         print(subset)
         for id in subset:
             print(id)
-            json_response, rep = connect_to_endpoint(i)
+            json_response, rep = connect_to_endpoint(id)
             print(json_response)
             print(json.dumps(json_response, indent=4, sort_keys=True))
             if("data" not in json_response):
