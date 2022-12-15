@@ -12,16 +12,20 @@ from sklearn.model_selection import KFold
 # Y = classification label
 
 X = []
-y = []
-file1 = open("src/Data/hatespeech.txt", 'r')
-lines = file1.readlines()
-for i, line in enumerate(lines):
-    for word in line:
-        if word == "racism" or word == "sexism" or word == "none":
-            Y[i] = word
-        else:
-            X[i] = line
-            break
+Y = []
+hatespeech_file = open("src/Data/hatespeech.txt", 'r')
+id_file = open("src/Data/ids.txt", 'r')
+hatespeech_lines = hatespeech_file.readlines()
+id_lines = id_file.readlines()
+#go through each line in hatespeech.txt and check if corresponding line in ids.txt contains hatespeech label
+for i, h_line in enumerate(hatespeech_lines):
+    X[i] = h_line
+    if id_lines[i].__contains__("racism"):
+        Y[i] = "racism"
+    elif id_lines[i].__contains__("sexism"):
+        Y[i] = "sexism"
+    else:
+        Y[i] = "none"
 
 #train and evaluate based on the data to get the F1 Measure assements of the model prediction
 def train_eval(classifier):
