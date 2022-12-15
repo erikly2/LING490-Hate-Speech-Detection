@@ -49,9 +49,11 @@ def train_eval(classifier):
         Y_train, Y_test = Y[train_index], Y[test_index]
         train_x = pd.get_dummies(X_train).values
         test_x = pd.get_dummies(X_test).values
+
         oneh = OneHotEncoder(handle_unknown="ignore")
         oneh.fit(train_x)
-        X_test = oneh.transform(test_x)
+        test_x = oneh.transform(test_x)
+        
         classifier.fit(train_x, Y_train)
         Y_pred = classifier.predict(test_x)
 
