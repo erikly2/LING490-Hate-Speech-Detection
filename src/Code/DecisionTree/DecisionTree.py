@@ -19,13 +19,13 @@ hatespeech_lines = hatespeech_file.readlines()
 id_lines = id_file.readlines()
 #go through each line in hatespeech.txt and check if corresponding line in ids.txt contains hatespeech label
 for i, h_line in enumerate(hatespeech_lines):
-    X[i] = h_line
+    X.append(h_line)
     if id_lines[i].__contains__("racism"):
-        Y[i] = "racism"
+        Y.append("racism")
     elif id_lines[i].__contains__("sexism"):
-        Y[i] = "sexism"
+        Y.append("sexism")
     else:
-        Y[i] = "none"
+        Y.append("none")
 
 #train and evaluate based on the data to get the F1 Measure assements of the model prediction
 def train_eval(classifier):
