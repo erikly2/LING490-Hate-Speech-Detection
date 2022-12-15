@@ -28,8 +28,8 @@ for i, h_line in enumerate(hatespeech_lines):
         Y.append("none")
 
 
-X = np.array(X)[indices.astype(int)]
-Y = np.array(Y)[indices.astype(int)]
+X = np.array(X)
+Y = np.array(Y)
 
 #train and evaluate based on the data to get the F1 Measure assements of the model prediction
 def train_eval(classifier):
