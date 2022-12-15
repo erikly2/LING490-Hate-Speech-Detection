@@ -40,9 +40,10 @@ def train_eval(classifier):
     for train_index, test_index in kf.split(X):
         X_train, X_test = X[train_index], X[test_index]
         Y_train, Y_test = Y[train_index], Y[test_index]
-        proc_classifier = preprocessing.LabelEncoder()
-        proc_classifier.fit(X_train, Y_train)
-        Y_pred = proc_classifier.predict(X_test)
+        #proc_classifier = preprocessing.LabelEncoder()
+        train_x = pd.get_dummies(X_train)
+        classifier.fit(train_x, Y_train)
+        Y_pred = classifier.predict(train_x)
         f1 = f1_score(Y_test, Y_pred, average="micro")
         aList.append(f1)
         foldCounter += 1
