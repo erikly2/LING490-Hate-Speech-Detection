@@ -5,7 +5,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import precision_score
 from sklearn.metrics import f1_score
+from sklearn.metrics import recall_score
+
 from sklearn.model_selection import KFold
 from sklearn import preprocessing
 
@@ -36,19 +39,27 @@ Y = np.array(Y)
 def train_eval(classifier):
     kf = KFold(n_splits = 5)        # fold the data
     foldCounter = 0
-    aList= list()
+    aList, bList, cList = list(), list(), list()
     for train_index, test_index in kf.split(X):
         X_train, X_test = X[train_index], X[test_index]
         Y_train, Y_test = Y[train_index], Y[test_index]
         #proc_classifier = preprocessing.LabelEncoder()
         train_x = pd.get_dummies(X_train)
+        test_x = pd.get_dummies(X_test)
         classifier.fit(train_x, Y_train)
-        Y_pred = classifier.predict(X_train)
+        Y_pred = classifier.predict(test_x)
+
         f1 = f1_score(Y_test, Y_pred, average="micro")
+        precision = precision_score(Y_test, Y_pred, average="micro")
+        recall = recall_score(Y_test, Y_pred, average="micro")
         aList.append(f1)
+        bList.append(precision)
+        cList.append(recall)
         foldCounter += 1
     F1 = np.mean(aList)
-    return F1
+    Precision = np.mean(bList)
+    Recall = np.mean(cList)
+    return Precision, Recall
 
 classifier = DecisionTreeClassifier()
 print(train_eval(classifier))
