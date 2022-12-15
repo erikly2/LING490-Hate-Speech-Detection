@@ -8,4 +8,4 @@ This overall system, Hate Speech Detection, consists of several parts: a ```/Dat
 The problem that our system attempts to tackle is detecting hate speech (specifically racism and sexism) in tweets. Our system parses tweets containing hate speech, taken from the Twitter API, and trains three different Machine Learning models (Naive Bayes, Decision Tree, Linear Regression) to detect the hate speech using this data.
 
 ## **Short description on how to run your code**
-In order to run our system, first run tweetscript.py to get the hate speech data, then run each ML model individually in their respective directories, to get resulting performance data.
+In order to run our system, first navigate the directory to the Data folder and run python3 tweetscript.py. You should then be able to get hatespeech data pulled from the Twitter API at hatespeech.txt. Run each ML model individually in their respective directories, to get resulting performance data.

@@ -43,7 +43,7 @@ def train_eval(classifier):
         #proc_classifier = preprocessing.LabelEncoder()
         train_x = pd.get_dummies(X_train)
         classifier.fit(train_x, Y_train)
-        Y_pred = classifier.predict(train_x)
+        Y_pred = classifier.predict(X_train)
         f1 = f1_score(Y_test, Y_pred, average="micro")
         aList.append(f1)
         foldCounter += 1
