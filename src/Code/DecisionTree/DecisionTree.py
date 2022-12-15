@@ -17,12 +17,14 @@ from sklearn import preprocessing
 
 X = []
 Y = []
-hatespeech_file = open("src/Data/hatespeech.txt", 'r')
-id_file = open("src/Data/ids.txt", 'r')
+hatespeech_file = open("src/Data/hatespeech.txt", 'r', encoding="utf8")
+id_file = open("src/Data/ids.txt", 'r', encoding="utf8")
 hatespeech_lines = hatespeech_file.readlines()
 id_lines = id_file.readlines()
 #go through each line in hatespeech.txt and check if corresponding line in ids.txt contains hatespeech label
 for i, h_line in enumerate(hatespeech_lines):
+    if h_line == 'no data\n':
+        continue
     X.append(h_line)
     if id_lines[i].__contains__("racism"):
         Y.append("racism")
@@ -35,15 +37,14 @@ X = np.array(X)
 Y = np.array(Y)
 
 
-#train and evaluate based on the data to get the F1 Measure assements of the model prediction
+#train and evaluate based on the data to get the F1 Measure, precision, and recall assements of the model prediction
 def train_eval(classifier):
-    kf = KFold(n_splits = 5)        # fold the data
+    kf = KFold(n_splits = 5)
     foldCounter = 0
     aList, bList, cList = list(), list(), list()
     for train_index, test_index in kf.split(X):
         X_train, X_test = X[train_index], X[test_index]
         Y_train, Y_test = Y[train_index], Y[test_index]
-        #proc_classifier = preprocessing.LabelEncoder()
         train_x = pd.get_dummies(X_train)
         test_x = pd.get_dummies(X_test)
         classifier.fit(train_x, Y_train)
@@ -63,4 +64,3 @@ def train_eval(classifier):
 
 classifier = DecisionTreeClassifier()
 print(train_eval(classifier))
-

@@ -8,7 +8,7 @@ from sklearn.linear_model import LinearRegression
 X = []
 y = [1,1,1,1,1]
 i = 0
-file1 = open("src/Data/hatespeech.txt", 'r')
+file1 = open("src/Data/hatespeech.txt", 'r', encoding="utf8")
 lines = file1.readlines()
 for line in lines:
     for word in line:
