@@ -8,7 +8,20 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import f1_score
 from sklearn.model_selection import KFold
 
-#NEED X and Y values 
+# X = tweets
+# Y = classification label
+
+X = []
+y = []
+file1 = open("src/Data/hatespeech.txt", 'r')
+lines = file1.readlines()
+for i, line in enumerate(lines):
+    for word in line:
+        if word == "racism" or word == "sexism" or word == "none":
+            Y[i] = word
+        else:
+            X[i] = line
+            break
 
 #train and evaluate based on the data to get the F1 Measure assements of the model prediction
 def train_eval(classifier):
