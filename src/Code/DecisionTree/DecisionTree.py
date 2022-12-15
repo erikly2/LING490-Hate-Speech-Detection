@@ -45,8 +45,8 @@ def train_eval(classifier):
     for train_index, test_index in kf.split(X):
         X_train, X_test = X[train_index], X[test_index]
         Y_train, Y_test = Y[train_index], Y[test_index]
-        train_x = pd.get_dummies(X_train)
-        test_x = pd.get_dummies(X_test)
+        train_x = pd.get_dummies(X_train).values
+        test_x = pd.get_dummies(X_test).values
         classifier.fit(train_x, Y_train)
         Y_pred = classifier.predict(test_x)
 
