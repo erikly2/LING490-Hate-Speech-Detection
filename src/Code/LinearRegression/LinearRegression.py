@@ -5,7 +5,6 @@ import seaborn as sns
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import f1_score, precision_score, recall_score
 
 X = []
 y = []
@@ -30,8 +29,7 @@ for i, h_line in enumerate(lines):
         y.append(0.6)
     else:
         y.append(0)
-#print(X)
-#print(y)
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
 
 X_train = np.array(X_train).reshape(-1, 1)
