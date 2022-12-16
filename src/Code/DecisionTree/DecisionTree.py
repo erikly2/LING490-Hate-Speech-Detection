@@ -7,13 +7,9 @@ import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
-
-classes = ["racism", "sexism", "none"]
 
 # X = tweets
 # Y = classification label
-
 X = []
 Y = []
 
