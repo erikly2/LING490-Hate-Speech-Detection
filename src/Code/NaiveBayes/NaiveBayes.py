@@ -1,48 +1,25 @@
-# # from sklearn.model_selection import train_test_split
-# # from sklearn.naive_bayes import GaussianNB
-# # from sklearn import preprocessing
-# # from sklearn.metrics import f1_score
-# # from sklearn.model_selection import KFold
-# # import numpy as np
-# # import matplotlib.pyplot as plt
-# # import pandas as pd
-
-# # def train_eval(classifier):
-# #     kf = KFold(n_splits = 5)        
-# #     foldCounter = 0
-# #     aList, bList, cList = list(), list(), list()
-# #     for train_index, test_index in kf.split(X):
-# #         X_train, X_test = X[train_index], X[test_index]
-# #         y_train, y_test = Y[train_index], Y[test_index]
-# #         classifier.fit(X_train, y_train)
-# #         y_pred = classifier.predict(X_test)
-# #         f1 = f1_score(y_test, y_pred, average="micro")
-# #         aList.append(f1)
-# #         foldCounter += 1
-# #     F1 = np.mean(aList)
-# #     Precision = np.mean(bList)
-# #     Recall = np.mean(cList)
-# #     return F1, Precision, Recall
-
-# # classifier = GaussianNB()
-# # print(train_eval(classifier))
-# from sklearn.naive_bayes import BernoulliNB
-# from sklearn.svm import SVC
-# from sklearn.model_selection import KFold
-# from sklearn.metrics import f1_score, precision_score, recall_score
-# import pandas as pd
 import numpy as np
-# from sklearn import preprocessing
+import matplotlib.pyplot as plt
+import pandas as pd
 
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
 
+# X = tweets
+# Y = classification label
 X = []
 Y = []
-hatespeech_file = open("src/Data/hatespeech.txt", 'r')
-id_file = open("src/Data/ids.txt", 'r')
+
+hatespeech_file = open("src/Data/hatespeech.txt", 'r', encoding="utf8")
+id_file = open("src/Data/ids.txt", 'r', encoding="utf8")
 hatespeech_lines = hatespeech_file.readlines()
 id_lines = id_file.readlines()
+
 #go through each line in hatespeech.txt and check if corresponding line in ids.txt contains hatespeech label
 for i, h_line in enumerate(hatespeech_lines):
+    if h_line == 'no data\n':
+        continue
     X.append(h_line)
     if id_lines[i].__contains__("racism"):
         Y.append("racism")
@@ -54,53 +31,17 @@ for i, h_line in enumerate(hatespeech_lines):
 X = np.array(X)
 Y = np.array(Y)
 
-# for i in range(len(all_data)):
-#     X[i] += ['*'] * (max_length - len(X[i]))
+#make string values into floats
+X = pd.get_dummies(X).values
 
-# X = pd.DataFrame(X)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 0)
 
-# def buildClassifiers(clf, X_train, X_test, y_train, y_test):
+classifier = GaussianNB()
 
-#     clf.fit(X_train, y_train)
-#     y_pred = clf.predict(X_test)
+model_fit = classifier.fit(X_train, Y_train)
+Y_pred = classifier.predict(X_test)
 
-#     f1 = f1_score(y_test, y_pred, average="micro", zero_division=0)
-#     precision = precision_score(y_test, y_pred, average="micro", zero_division=0)
-#     recall = recall_score(y_test, y_pred, average="micro", zero_division=0)
 
-#     return f1, precision, recall
-
-# names = ['Naive_Bayes']
-# classifiers = [BernoulliNB()]
-
-# for name, clf in zip(names, classifiers):
-
-#     print('Now classifying', name)
-#     kf = KFold(n_splits = 10, shuffle=True)
-#     foldCounter = 0
-#     aList, bList, cList = list(), list(), list()
-#     for train_index, test_index in kf.split(X):
-#         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-#         y_train, y_test = np.take(Y, train_index), np.take(Y, test_index)
-
-#         f1, precision, recall = buildClassifiers(clf, X_train, X_test, y_train, y_test)
-#         aList.append(f1)
-#         bList.append(precision)
-#         cList.append(recall)
-
-#         foldCounter += 1
-
-#     print("\tAverage F1 for {}:\t\t".format(name), np.mean(aList))
-#     print("\tAverage Precision for {}:\t".format(name), np.mean(bList))
-#     print("\tAverage Recall for {}:\t\t".format(name), np.mean(cList))
-
-import sklearn
-from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import GaussianNB
-train, test, train_labels, test_labels = train_test_split(
-   X,Y,test_size = 0.40, random_state = 42
-)
-GNBclf = GaussianNB()
-model = GNBclf.fit(train, train_labels)
-preds = GNBclf.predict(test)
-print(preds)
+print('R2 Training Score: %.3f' % model_fit.score(X_train, Y_train))
+print('R2 Testing Score: %.3f' % model_fit.score(X_test, Y_test))	
+print(classification_report(Y_test, Y_pred))
