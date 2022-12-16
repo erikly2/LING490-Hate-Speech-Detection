@@ -40,5 +40,6 @@ y_train = np.array(y_train).reshape(-1, 1)
 y_test = np.array(y_test).reshape(-1, 1)
 
 model_fit = LinearRegression().fit(X_train, y_train)
-print(model_fit.score(X_train, y_train))
-print(model_fit.score(X_test, y_test))
+
+print('R2 Training Score: %.3f' % model_fit.score(X_train, y_train))
+print('R2 Testing Score: %.3f' % model_fit.score(X_test, y_test))
