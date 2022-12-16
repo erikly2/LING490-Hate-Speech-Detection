@@ -5,16 +5,16 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import precision_score
-from sklearn.metrics import f1_score
-from sklearn.metrics import recall_score
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
-
-
-
+from sklearn.metrics import classification_report
 from sklearn.model_selection import KFold
 from sklearn import preprocessing
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+
+
+
+classes = ["racism", "sexism", "none"]
 
 # X = tweets
 # Y = classification label
@@ -41,16 +41,23 @@ X = np.array(X)
 Y = np.array(Y)
 
 X = pd.get_dummies(X).values
-#test_x = pd.get_dummies(X).values
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 0)
-print(len(X_train))
-print(len(Y_train))
-print(len(X_test))
-print(len(Y_test))
+
+classifier = DecisionTreeClassifier(random_state=0)
+
+model_fit = classifier.fit(X_train, Y_train)
+Y_pred = classifier.predict(X_test)
+
+print(model_fit.score(X_train, Y_train))
+print(model_fit.score(X_test, Y_test))
+print(classification_report(Y_test, Y_pred))
+
+print('F1: %.3f' % f1_score(Y_test, Y_pred, average='micro'))	
+print('Recall: %.3f' % recall_score(Y_test, Y_pred))
+print('Precision: %.3f' % precision_score(Y_test, Y_pred))
+print('Accuracy: %.3f' % accuracy_score(Y_test, Y_pred))
 
 
-classifier = DecisionTreeClassifier(random_state=0).fit(X_train, Y_train)
+#print(classification_report(Y_test, Y_pred, target_names=class_names))
 
-#model_fit = classifier.fit(X_train, Y_train)
-print(classifier.score(X_train, Y_train))
-print(classifier.score(X_test, Y_test))
+
