@@ -8,6 +8,10 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import precision_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import recall_score
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.model_selection import train_test_split
+
+
 
 from sklearn.model_selection import KFold
 from sklearn import preprocessing
@@ -17,12 +21,14 @@ from sklearn import preprocessing
 
 X = []
 Y = []
-hatespeech_file = open("src/Data/hatespeech.txt", 'r')
-id_file = open("src/Data/ids.txt", 'r')
+hatespeech_file = open("src/Data/hatespeech.txt", 'r', encoding="utf8")
+id_file = open("src/Data/ids.txt", 'r', encoding="utf8")
 hatespeech_lines = hatespeech_file.readlines()
 id_lines = id_file.readlines()
 #go through each line in hatespeech.txt and check if corresponding line in ids.txt contains hatespeech label
 for i, h_line in enumerate(hatespeech_lines):
+    if h_line == 'no data\n':
+        continue
     X.append(h_line)
     if id_lines[i].__contains__("racism"):
         Y.append("racism")
@@ -34,33 +40,17 @@ for i, h_line in enumerate(hatespeech_lines):
 X = np.array(X)
 Y = np.array(Y)
 
+X = pd.get_dummies(X).values
+#test_x = pd.get_dummies(X).values
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 0)
+print(len(X_train))
+print(len(Y_train))
+print(len(X_test))
+print(len(Y_test))
 
-#train and evaluate based on the data to get the F1 Measure assements of the model prediction
-def train_eval(classifier):
-    kf = KFold(n_splits = 5)        # fold the data
-    foldCounter = 0
-    aList, bList, cList = list(), list(), list()
-    for train_index, test_index in kf.split(X):
-        X_train, X_test = X[train_index], X[test_index]
-        Y_train, Y_test = Y[train_index], Y[test_index]
-        #proc_classifier = preprocessing.LabelEncoder()
-        train_x = pd.get_dummies(X_train)
-        test_x = pd.get_dummies(X_test)
-        classifier.fit(train_x, Y_train)
-        Y_pred = classifier.predict(test_x)
 
-        f1 = f1_score(Y_test, Y_pred, average="micro")
-        precision = precision_score(Y_test, Y_pred, average="micro")
-        recall = recall_score(Y_test, Y_pred, average="micro")
-        aList.append(f1)
-        bList.append(precision)
-        cList.append(recall)
-        foldCounter += 1
-    F1 = np.mean(aList)
-    Precision = np.mean(bList)
-    Recall = np.mean(cList)
-    return Precision, Recall
+classifier = DecisionTreeClassifier(random_state=0).fit(X_train, Y_train)
 
-classifier = DecisionTreeClassifier()
-print(train_eval(classifier))
-
+#model_fit = classifier.fit(X_train, Y_train)
+print(classifier.score(X_train, Y_train))
+print(classifier.score(X_test, Y_test))
