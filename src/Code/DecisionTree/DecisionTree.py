@@ -40,18 +40,17 @@ for i, h_line in enumerate(hatespeech_lines):
 X = np.array(X)
 Y = np.array(Y)
 
-
-#train_x = pd.get_dummies(X_train).values
-#test_x = pd.get_dummies(X_test).values
+X = pd.get_dummies(X).values
+#test_x = pd.get_dummies(X).values
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 0)
+print(len(X_train))
+print(len(Y_train))
+print(len(X_test))
+print(len(Y_test))
 
-X_train = np.array(X_train).reshape(-1, 1)
-X_test = np.array(X_test).reshape(-1, 1)
-Y_train = np.array(Y_train).reshape(-1, 1)
-Y_test = np.array(Y_test).reshape(-1, 1)
 
-classifier = DecisionTreeClassifier()
+classifier = DecisionTreeClassifier(random_state=0).fit(X_train, Y_train)
 
-model_fit = classifier.fit(X_train, Y_train)
-print(model_fit.score(X_train, Y_train))
-print(model_fit.score(X_test, Y_test))
+#model_fit = classifier.fit(X_train, Y_train)
+print(classifier.score(X_train, Y_train))
+print(classifier.score(X_test, Y_test))
