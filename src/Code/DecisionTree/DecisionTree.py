@@ -47,8 +47,9 @@ classifier = DecisionTreeClassifier(random_state=0)
 model_fit = classifier.fit(X_train, Y_train)
 Y_pred = classifier.predict(X_test)
 
-print(model_fit.score(X_train, Y_train))
-print(model_fit.score(X_test, Y_test))
+
+print('R2 Training Score: %.3f' % model_fit.score(X_train, Y_train))
+print('R2 Testing Score: %.3f' % model_fit.score(X_test, Y_test))	
 print(classification_report(Y_test, Y_pred))
 
 
