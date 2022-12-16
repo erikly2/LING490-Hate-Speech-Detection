@@ -51,12 +51,5 @@ print(model_fit.score(X_train, Y_train))
 print(model_fit.score(X_test, Y_test))
 print(classification_report(Y_test, Y_pred))
 
-print('F1: %.3f' % f1_score(Y_test, Y_pred, average='micro'))	
-print('Recall: %.3f' % recall_score(Y_test, Y_pred))
-print('Precision: %.3f' % precision_score(Y_test, Y_pred))
-print('Accuracy: %.3f' % accuracy_score(Y_test, Y_pred))
-
-
-#print(classification_report(Y_test, Y_pred, target_names=class_names))
 
 
