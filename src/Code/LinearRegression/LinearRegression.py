@@ -27,7 +27,7 @@ for i, h_line in enumerate(lines):
     if id_lines[i].__contains__("racism"):
         y.append(0.8)
     elif id_lines[i].__contains__("sexism"):
-        y.append(0.7)
+        y.append(0.6)
     else:
         y.append(0)
 #print(X)
@@ -42,4 +42,3 @@ y_test = np.array(y_test).reshape(-1, 1)
 model_fit = LinearRegression().fit(X_train, y_train)
 print(model_fit.score(X_train, y_train))
 print(model_fit.score(X_test, y_test))
-#model_fit.fit(X_train, y_train)
