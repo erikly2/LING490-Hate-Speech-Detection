@@ -7,7 +7,7 @@ import json
 # # To set your enviornment variables in your terminal run the following line:
 # # export 'BEARER_TOKEN'='<your_bearer_token>'
 bearer_token = "AAAAAAAAAAAAAAAAAAAAAN0ejwEAAAAAG6RofdC3LcMq4iTMeUG%2F2MDWPa4%3DtEZKKeXijG7h4f9BUfdJrMrZy9zKIFAjlrqUldJkZ3VbOrNrYZ"
-f = open("hatespeech.txt", "w")
+f = open("hatespeech.txt", "a")
 consumer_key = "1dWU3QayflekgFSnmnTur7841"
 consumer_secret = "Uqpty3X7zCQYgJ1ariHOkd2FS8xOaUadQ1S4TNGvJE8Rvd6gsA"
 params = {"ids": "565900500273750019", "tweet.fields": "created_at"}
@@ -100,7 +100,7 @@ def main():
             if("data" not in json_response):
                 print("no data")
                 f.write("no data" + "\n")
-                break
+                continue
             for datapiece in json_response["data"]:
                 print("here")
                 print(var)
