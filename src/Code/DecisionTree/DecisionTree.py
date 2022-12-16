@@ -5,14 +5,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
-from sklearn.model_selection import KFold
-from sklearn import preprocessing
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
-
-
 
 classes = ["racism", "sexism", "none"]
 
@@ -21,10 +16,12 @@ classes = ["racism", "sexism", "none"]
 
 X = []
 Y = []
+
 hatespeech_file = open("src/Data/hatespeech.txt", 'r', encoding="utf8")
 id_file = open("src/Data/ids.txt", 'r', encoding="utf8")
 hatespeech_lines = hatespeech_file.readlines()
 id_lines = id_file.readlines()
+
 #go through each line in hatespeech.txt and check if corresponding line in ids.txt contains hatespeech label
 for i, h_line in enumerate(hatespeech_lines):
     if h_line == 'no data\n':
@@ -40,7 +37,9 @@ for i, h_line in enumerate(hatespeech_lines):
 X = np.array(X)
 Y = np.array(Y)
 
+#make string values into floats
 X = pd.get_dummies(X).values
+
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 0)
 
 classifier = DecisionTreeClassifier(random_state=0)
